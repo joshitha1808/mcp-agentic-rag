@@ -35,3 +35,4 @@ numpy
 pytest
 
 requests
+langchain-text-splitters
