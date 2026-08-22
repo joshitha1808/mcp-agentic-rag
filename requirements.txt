@@ -1,0 +1,37 @@
+# Core
+python-dotenv
+
+# PDF processing
+PyMuPDF
+
+# RAG / embeddings
+sentence-transformers
+chromadb
+rank-bm25
+
+# Reranking
+# CrossEncoder is included with sentence-transformers
+
+# LLM
+google-genai
+
+# Agent orchestration
+langgraph
+langchain-core
+
+# MCP
+mcp
+
+# Dashboard
+streamlit
+plotly
+
+# Data / utilities
+pydantic
+pandas
+numpy
+
+# Testing
+pytest
+
+requests
