@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Dict, List
 
-import fitz
+import pymupdf
 
 
 DOCUMENTS_DIR = Path("data/documents")
@@ -70,7 +70,7 @@ def extract_pdf_pages(
 
     pages = []
 
-    with fitz.open(pdf_path) as pdf:
+    with pymupdf.open(pdf_path) as pdf:
 
         if len(pdf) == 0:
             raise ValueError(
