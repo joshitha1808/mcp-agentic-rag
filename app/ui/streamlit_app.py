@@ -1,6 +1,8 @@
 import streamlit as st
+from pathlib import Path
 
 from app.agent.agent import RAGAgent
+from app.mcp.tools import summarize_document
 
 
 # ============================================================
@@ -93,6 +95,54 @@ for message in st.session_state.messages:
         st.markdown(
             message["content"]
         )
+
+
+# ============================================================
+# USER INPUT
+# ============================================================
+
+# -----------------------------
+# DOCUMENT SUMMARY
+# -----------------------------
+
+with st.expander("📄 Document Summary", expanded=False):
+
+    documents_dir = Path("data/documents")
+
+    pdf_files = sorted(
+        documents_dir.glob("*.pdf")
+    )
+
+    options = [p.name for p in pdf_files]
+
+    if options:
+        selected_doc = st.selectbox(
+            "Select a document to summarize",
+            options,
+        )
+
+        if st.button("Generate Summary"):
+
+            doc_id = (
+                selected_doc.replace(".pdf", "")
+                .lower()
+                .replace(" ", "_")
+            )
+
+            with st.spinner("Generating summary..."):
+
+                result = summarize_document(
+                    document_id=doc_id
+                )
+
+            if result.get("error"):
+                st.error(result["error"])
+            else:
+                st.subheader("Summary")
+                st.markdown(result.get("summary", ""))
+
+    else:
+        st.write("No PDF documents found in data/documents.")
 
 
 # ============================================================
