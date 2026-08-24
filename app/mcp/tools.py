@@ -132,6 +132,33 @@ def get_document_page(
 
 
 # ============================================================
+# SUMMARIZE DOCUMENT
+# ============================================================
+
+def summarize_document(
+    document_id: str,
+) -> dict[str, Any]:
+    """
+    Summarize a document by ID using the MCP server summarize_document tool.
+    """
+
+    if not document_id or not document_id.strip():
+        return {
+            "error": "Document ID cannot be empty."
+        }
+
+    try:
+        return mcp_client.summarize_document(
+            document_id=document_id.strip(),
+        )
+
+    except Exception as e:
+        return {
+            "error": f"SUMMARIZE_DOCUMENT failed: {e}"
+        }
+
+
+# ============================================================
 # HYBRID SEARCH
 # ============================================================
 
