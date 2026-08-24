@@ -323,6 +323,71 @@ def ask_documents(
     )
 
 # ============================================================
+# TOOL 8 — SUMMARIZE DOCUMENT
+# ============================================================
+
+@mcp.tool()
+def summarize_document(
+    document_id: str,
+) -> dict[str, Any]:
+    """
+    Summarize an indexed PDF/document.
+
+    Steps:
+    1. Locate the PDF in data/documents by normalized ID.
+    2. Extract its pages using extract_pdf_pages.
+    3. Call the RAGGenerator.summarize_document method.
+    4. Return {"document": <name>, "summary": <text>}.
+    """
+
+    documents_dir = Path("data/documents")
+
+    pdf_path = None
+
+    for file in documents_dir.glob("*.pdf"):
+
+        current_id = (
+            file.stem
+            .lower()
+            .replace(" ", "_")
+        )
+
+        if current_id == document_id.lower():
+            pdf_path = file
+            break
+
+    if pdf_path is None:
+        return {
+            "error": f"Document not found: {document_id}"
+        }
+
+    try:
+        pages = extract_pdf_pages(pdf_path)
+    except Exception as e:
+        return {
+            "error": f"Failed to extract PDF pages: {e}"
+        }
+
+    if not pages:
+        return {
+            "error": "Document contains no extractable text."
+        }
+
+    try:
+        summary = rag_pipeline.generator.summarize_document(
+            pages
+        )
+    except Exception as e:
+        return {
+            "error": f"Summarization failed: {e}"
+        }
+
+    return {
+        "document": pdf_path.name,
+        "summary": summary,
+    }
+
+# ============================================================
 # SERVER STARTUP
 # ============================================================
 
