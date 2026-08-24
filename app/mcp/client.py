@@ -8,6 +8,7 @@ from app.mcp.server import (
     evaluate_answer,
     ask_question,
     ask_documents,
+    summarize_document,
 )
 
 
@@ -121,4 +122,17 @@ class MCPClient:
 
         return ask_documents(
             question=question,
+        )
+
+    # ============================================================
+    # SUMMARIZE DOCUMENT
+    # ============================================================
+
+    def summarize_document(
+        self,
+        document_id: str,
+    ) -> dict[str, Any]:
+
+        return summarize_document(
+            document_id=document_id,
         )
